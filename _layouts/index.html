@@ -1,0 +1,47 @@
+---
+layout: default
+
+---
+
+<div id="main" role="main" class="post-list">
+
+</div>
+
+<script>
+let num = 1;
+let url = `${location.origin}/api`
+let checkProc = true
+window.onscroll = (ev) => {
+  if (window.innerHeight + Math.ceil(window.pageYOffset) >= document.body.offsetHeight) {
+    getPost();
+  }
+};
+
+const getPost = async () => {
+  if (checkProc === false) return false;
+  checkProc = false;
+  if (num > 1) {
+    url = `${location.origin}/api/feed-${num}.json`
+  }
+  const response = await fetch(url);
+  if (response.ok) {
+    const result = await response.json();
+    addPostHtml(result.pages) 
+    num++;
+    return (checkProc = true);
+  }
+};
+
+const addPostHtml = (postJson) => {  
+  const postList = document.querySelector(`.post-list`);  
+  postJson.map((post)=> {    
+    let html = `
+    <div class="infinite-scroll-post" style="height:600px; width:1000px; background-color:red;">
+      ${post.content}
+    </div>`
+    postList.insertAdjacentHTML( 'beforeend', html );
+  })    
+}
+
+getPost()
+</script>

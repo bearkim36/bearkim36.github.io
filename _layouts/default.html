@@ -3,14 +3,13 @@
 
   {% include head.html %}
 
-  <body class="{{ page.layout }}{% if page.url == '/' %} home{% endif %}">
-
+  <body class="{{ page.layout }}{% if page.url == '/' %} home{% endif %}">    
     {% include sidebar.html %}
 
     <main class="container">
       {{ content }}
     </main>
 
-    {% include foot.html %}
+    {% include foot.html %}    
   </body>
 </html>

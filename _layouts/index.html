@@ -3,7 +3,7 @@ layout: default
 
 ---
 
-<div id="main" role="main" class="post-list">
+<div id="main" role="main" class="main-post-list">
 
 </div>
 
@@ -33,12 +33,13 @@ const getPost = async () => {
 };
 
 const addPostHtml = (postJson) => {  
-  const postList = document.querySelector(`.post-list`);  
+  const postList = document.querySelector(`.main-post-list`);  
   postJson.map((post)=> {    
     let html = `
-    <div class="infinite-scroll-post" style="height:600px; width:1000px; ">
+    <div class="infinite-scroll-post">
       ${post.content}
     </div>`
+    console.log(html)
     postList.insertAdjacentHTML( 'beforeend', html );
   })    
 }

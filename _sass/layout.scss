@@ -1,0 +1,47 @@
+body {  
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+#sidebar {
+  flex: 0 0 auto;
+  padding: $section-spacing;
+  background-attachment: fixed;
+  background-color: $sidebar-bg-color;
+  background-image: linear-gradient(to bottom, lighten($sidebar-bg-color, 7%), darken($sidebar-bg-color, 7%));
+  .wrap {
+    position:fixed;
+  }
+  .site-title {    
+    color: $sidebar-title-color;    
+    font-size: $large-font-size;    
+    margin-bottom: $heading-spacing;
+    margin-top: 0;    
+  }
+}
+
+.content {
+  background: $body-bg;
+  color: $body-color;
+  padding: $section-spacing;
+}
+
+// Container is flexbox as well -- we want content div to stretch and fill
+.container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+
+  > .content {
+    flex-grow: 1;
+    padding-bottom: $section-spacing * 2;
+  }
+}
+
+
+.main-post-list { 
+  .infinite-scroll-post {
+    height:500px;
+  }
+}

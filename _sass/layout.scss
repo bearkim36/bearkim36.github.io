@@ -5,14 +5,17 @@ body {
 }
 
 #sidebar {
-  flex: 0 0 auto;
+  // flex: 0 0 auto;
+  position: fixed;
+  width: $sidebar-width;
+  top: 0;
+  left: 0;
+  bottom: 0;
   padding: $section-spacing;
   background-attachment: fixed;
   background-color: $sidebar-bg-color;
   background-image: linear-gradient(to bottom, lighten($sidebar-bg-color, 7%), darken($sidebar-bg-color, 7%));
-  .wrap {
-    position:fixed;
-  }
+  
   .site-title {    
     color: $sidebar-title-color;    
     font-size: $large-font-size;    
@@ -29,6 +32,8 @@ body {
 
 // Container is flexbox as well -- we want content div to stretch and fill
 .container {
+  margin-left: $sidebar-width;
+  max-width: 1400px;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -42,6 +47,34 @@ body {
 
 .main-post-list { 
   .infinite-scroll-post {
-    height:500px;
-  }
+    min-height: 200px;
+    padding: $section-spacing;
+    background-color: $body-bg;
+    margin-bottom: $section-spacing;
+    border-bottom: 1px solid $border-color;
+
+    a {
+      color : $gray-5
+    }
+    .post-title-wrap {
+      display:flex;    
+  
+      .title {
+        flex: 1;
+        margin: 0;
+        a {
+          color : $gray-6
+        }
+      }
+      .date {
+        width:200px;      
+        font-size: 0.7em;
+        display: flex;
+        padding: 10px;
+        text-align: right;      
+        flex-direction: column-reverse;
+        color: $gray-4;      
+      }
+    }
+  }  
 }

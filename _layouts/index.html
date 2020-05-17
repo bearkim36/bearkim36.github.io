@@ -3,7 +3,7 @@ layout: default
 
 ---
 
-<div id="main" role="main" class="main-post-list">
+<div id="main" role="main" class="main-post-list content">
 
 </div>
 
@@ -11,6 +11,7 @@ layout: default
 let num = 1;
 let url = `${location.origin}/api`
 let checkProc = true
+
 window.onscroll = (ev) => {
   if (window.innerHeight + Math.ceil(window.pageYOffset) >= document.body.offsetHeight) {
     getPost();
@@ -33,13 +34,23 @@ const getPost = async () => {
 };
 
 const addPostHtml = (postJson) => {  
-  const postList = document.querySelector(`.main-post-list`);  
+  const postList = document.querySelector(`.main-post-list`);    
   postJson.map((post)=> {    
-    let html = `
+    const link = `${location.origin}${post.link}`    
+    const html = `
     <div class="infinite-scroll-post">
-      ${post.content}
-    </div>`
-    console.log(html)
+      <div class="post-title-wrap">        
+        <h3 class="title">
+          <a href="${link}">${post.title}</a>
+        </h3>
+        <div class="date">
+          ${post.date}
+        </div>
+      </div>
+      <div>
+        <a href="${link}">${post.content}</a>
+      </div>
+    </div>`    
     postList.insertAdjacentHTML( 'beforeend', html );
   })    
 }

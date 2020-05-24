@@ -2,9 +2,9 @@
 layout: default
 
 ---
-
+{{content}}
 <div id="main" role="main" class="main-post-list content">
-
+  
 </div>
 
 <script>
@@ -23,6 +23,9 @@ const getPost = async () => {
   checkProc = false;
   if (num > 1) {
     url = `${location.origin}/api/feed-${num}.json`
+  }
+  else {
+    url = `${location.origin}/api/index.json`
   }
   const response = await fetch(url);
   if (response.ok) {

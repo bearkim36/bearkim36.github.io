@@ -14,7 +14,7 @@ html {
   line-height: $root-line-height;
 
   @media (min-width: $large-breakpoint) {
-    font-size: $large-font-size;
+    font-size: 1.1em;
   }
 }
 
@@ -102,4 +102,15 @@ input[type='submit'] {
     box-shadow: $default-box-shadow;
     color: #fff;
   }
+}
+
+ul {
+  list-style: none;
+  margin:0;
+  padding:0;
+}
+
+li {
+  margin:0;
+  padding:0;
 }

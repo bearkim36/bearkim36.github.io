@@ -7,21 +7,46 @@ body {
 #sidebar {
   // flex: 0 0 auto;
   position: fixed;
+  display: flex;
+  flex-direction: column;  
+  justify-content: space-between;
   width: $sidebar-width;
   top: 0;
   left: 0;
-  bottom: 0;
+  bottom: 0;  
   padding: $section-spacing;
-  background-attachment: fixed;
+  color: $sidebar-text-color;  
+  background-attachment: fixed;  
   background-color: $sidebar-bg-color;
-  background-image: linear-gradient(to bottom, lighten($sidebar-bg-color, 7%), darken($sidebar-bg-color, 7%));
+  background-image: linear-gradient(to bottom, lighten($sidebar-bg-color, 7%), darken($sidebar-bg-color, 7%));  
   
-  .site-title {    
-    color: $sidebar-title-color;    
-    font-size: $large-font-size;    
+  .site-title {
+    color: $sidebar-title-color;
     margin-bottom: $heading-spacing;
     margin-top: 0;    
   }
+
+  .site-title a {
+    color: $sidebar-link-color;
+  }
+
+  .site-title a:hover {
+    color: $sidebar-link-color;
+    text-decoration: none;
+  }
+  .menu {    
+    color: $sidebar-text-color;    
+    margin-top: 4em;
+  }
+
+  .menu a {
+    color: $sidebar-text-color;
+  }
+  .menu a:hover {
+    color: $sidebar-link-color;
+    text-decoration: none;
+  }
+
 }
 
 .content {
@@ -46,8 +71,7 @@ body {
 
 
 .main-post-list { 
-  .infinite-scroll-post {
-    min-height: 200px;
+  .infinite-scroll-post {    
     padding: $section-spacing;
     background-color: $body-bg;
     margin-bottom: $section-spacing;
@@ -77,4 +101,39 @@ body {
       }
     }
   }  
+}
+
+
+
+.post-title {
+  margin-bottom: $section-spacing;  
+  font-size:1.8em;
+}
+
+.post-meta {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1em;  
+  .post-date {
+    color:$gray-4;
+    font-size: 0.8em;
+    
+  }
+  .post-categories {
+
+  }
+}
+
+.post-body {
+  min-height:30em;
+}
+
+.related {  
+  .posts-list {
+    border-top:1px solid $gray-3;
+    li {
+
+    }
+  }
 }

@@ -32,7 +32,7 @@ plugins:
   - jekyll-sitemap
   - jekyll-feed  
   - jekyll-paginate-v2
-  
+  - jekyll-admin
 sass:
   sass_dir: _sass
   style: compressed

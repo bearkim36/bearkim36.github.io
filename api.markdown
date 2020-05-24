@@ -14,7 +14,7 @@ pagination:
     {
       "title": "{{ post.title }}",
       "date": "{{ post.date }}",
-      "content": "{{ post.content | markdownify | strip_html | truncatewords: 50 }}",
+      "content": "{{ post.content | markdownify | strip_html | strip | truncatewords: 30 }}",
       "link": "{{ post.url }}"
     }{% endfor %}
   ]

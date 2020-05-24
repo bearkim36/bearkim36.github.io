@@ -17,7 +17,8 @@ gem "minima", "~> 2.5"
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
   gem "jekyll-paginate-v2", "~> 3.0.0"
-  gem "jekyll-sitemap", "~> 1.4.0"
+  gem "jekyll-sitemap", "~> 1.4.0"  
+  gem "jekyll-admin"
 end
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -30,3 +31,4 @@ end
 # Performance-booster for watching directories on Windows
 gem "wdm", "~> 0.1.1", :install_if => Gem.win_platform?
 
+# gem "jekyll-auth", "~> 2.1.1"

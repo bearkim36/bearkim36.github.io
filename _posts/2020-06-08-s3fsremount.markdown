@@ -40,6 +40,7 @@ total 0
 이 경우, s3fs마운트를 다시 설정하면 해결된다.
 ```sh
 $ sudo fusermount -u 마운트경로
-$ s3fs s3버킷명 마운트경로
+$ sudo s3fs [버킷명] [마운트 경로] -o use_cache=/tmp -o allow_other -o uid=[사용자ID] -o gid=[사용자 그룹ID] -o multireq_max=20 -o use_path_request_style -o url=https://s3-[리전id].amazonaws.com
 ```
+
 

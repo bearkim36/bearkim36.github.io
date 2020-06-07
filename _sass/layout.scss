@@ -68,7 +68,11 @@ body {
     padding-bottom: $section-spacing * 2;
   }
 }
-
+@media (max-width: 1400px) {
+  .container {
+    width: calc(100% - 260px);
+  }
+}
 
 .main-post-list { 
   .infinite-scroll-post {    

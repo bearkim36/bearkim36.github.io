@@ -110,8 +110,8 @@ $default-box-shadow: $box-shadow-size $box-shadow-size $box-shadow-size
 $code-font-family: Menlo, Monaco, "Courier New", monospace !default;
 $code-color: #bf616a !default;
 
-// Hyde theming
-$sidebar-bg-color: #268bd2 !default;
+/*$sidebar-bg-color: #268bd2 !default;*/
+$sidebar-bg-color: #333333 !default;
 $sidebar-fg-color: #fff !default;
 $sidebar-sticky: true !default;
 $layout-reverse: false !default;

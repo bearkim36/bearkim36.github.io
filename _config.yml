@@ -29,7 +29,7 @@ github_username:  bearkim36
 # Build settings
 #theme: minima
 plugins:
-  - jekyll-sitemap
+  # - jekyll-sitemap
   - jekyll-feed  
   - jekyll-paginate-v2
   - jekyll-admin

@@ -119,7 +119,7 @@ jobs:
       # 노출하기 싫은 환경변수를 저장할 수 있다.
 
       # 아래 스크립트는 build에 있는 파일을 배포서버의 웹서버 루트에 복사해 넣는 액션이다.
-      - name: executing remote ssh commands using ssh key
+      - name: scp action
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -138,5 +138,9 @@ jobs:
 ![파일 업로드 완료](/files/posts/2021-03-08/image4.png)
 
 이 과정에서 테스트를 한다거나 파일배치를 옮긴다거나 디테일을 추가 할 수는 있지만 이 것은 나중에 추가로 포스트를 작성할 계획이다. 일단 여기까지. 
+
+참고 예제
+https://github.com/bearkim36/devops-frontend-example
+
 
 # &nbsp;

@@ -113,7 +113,7 @@ jobs:
         run: npm run build
 
       # scp 파일 복사
-      # ${{secret.키 이름}} 은 github repository 시크릿 키이다. 
+      # secret.키 이름 은 github repository 시크릿 키이다. 
       # 구글링 해도 쉽게 나오지만 간단하게 설명하면 
       # github repository 상단메뉴 > settings > secrets 에 new respositry secret 버튼으로 
       # 노출하기 싫은 환경변수를 저장할 수 있다.

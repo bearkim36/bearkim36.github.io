@@ -6,11 +6,16 @@ categories: bearkim
 ---
 
 MS가 github을 인수하고 나서 모든 개발환경에 중심에 Github이 있는 것 같다. 형상관리에서 CI/CD까지 아우르는 github생태계는 개발자들에게 새로운 영감을 준다. 하지만 역시나 한글로된 국내자료는 단편적인 부분만 있고, 전반적인 devops구성에는 제대로 된 자료를 찾기가 어렵다. 애초에 devops의 자료 자체가 강호에 전설로만 내려오는 무공비급마냥 찾기 힘든게 사실이다. 이번 포스트는 나름에 시리즈로 실무에서 흔히 접할 수 있는 WebProject를 상정해 이를 구성하는 devops를 github과 github actions을 통하여 구성해보는 예제를 만들고자 한다.
+
+##### Overview
+- Github Actions 을 이용한 자동 배포
+- <span style="color:#cccccc">docker hub를 이용한 패키지 형상 관리</span>
+- <span style="color:#cccccc">Github Actions과 docker hub를 이용한 자동 배포</span>
   
 # &nbsp;
 #### 1. devops가 무엇인가
 
-사전적인 의미보다는 실무에서 devops는 말그대로 개발환경이다. 약 십년전에 자바개발을 위해 이클립스를 설치하고 JDK경로로 JAVA_HOME을 잡는 것도 개발환경 설정이지지만, 여기서 개발환경 이라고 하는 것은 CI(지속적인 소스통합), CD(지속적인 소스배포) 작업을 단순화 하기 위함이다. 다음의 작업으로 예를 들어보자.
+사전적인 의미보다는 실무에서 devops는 말그대로 개발환경이다. 로컬에 개발툴을 설치하는 것도 개발환경 설정이지만, 여기서 개발환경 이라고 하는 것은 CI(지속적인 소스통합), CD(지속적인 소스배포) 작업을 단순화 하기 위함이다. 다음의 작업으로 예를 들어보자.
 
 ![WebProject 논리 구조도](/files/posts/2021-03-08/image1.png)
 
@@ -21,7 +26,7 @@ MS가 github을 인수하고 나서 모든 개발환경에 중심에 Github이 �
 1. 퍼블리셔가 소스를 수정하고 github에 push한다.
 2. 퍼블리셔가 개발자에게 소스가 수정됐다고 알린다.
 3. 개발자 (혹은 관리자)가 이 소스를 github에서 pull한다.
-4. 리액트를 빌드한다.
+4. react (혹은 vue)를 빌드한다.
 5. 빌드된 소스를 scp를 써서 배포서버의 배포서버에 web root에 복사해 넣는다.
 6. 반복
 
@@ -39,7 +44,7 @@ MS가 github을 인수하고 나서 모든 개발환경에 중심에 Github이 �
 무엇을 만들던 간에 목표가 제일 중요하다. 프로젝트 마다 처한 상황과 환경이 다르기 때문에 무엇이 최적이라고 할 수는 없지만, 그걸 합리적으로 설계하는 것이 devops설계의 핵심이다. 이번에 예제로 할 WebProject는 다음의 상황을 가정한다.
 
 1. ssh로 접근할 수 있는 리눅스 배포 서버가 있다.
-2. Frontend소스와 Backend소스는 github으로 형상관리 중이다.
+2. 소스는 github으로 형상관리 중이다.
 3. 비용때문에 Frontend와 Backend, mongodb는 한 서버에 있다.
 4. 같은소스를 다른 서버에 포팅 할 일은 없다.
 5. 코드 업데이트가 꽤 빈번히 일어난다.
@@ -99,7 +104,7 @@ pm2 reload all
 
 그럼 이 작업들을 github actions에게 떠넘겨보자.
 
-일단은 각각의 프로젝트 내부에 .github/workflow 라는 디렉토리를 만든다. 그리고 이 안에 yml파일을 만든다. 파일명은 크게 상관없다.
+일단은 각각의 프로젝트 내부에 .github/workflows 라는 디렉토리를 만든다. 그리고 이 안에 yml파일을 만든다. 파일명은 크게 상관없다.
 
 ![yml 디렉토리 구조](/files/posts/2021-03-08/image2.png)
 
@@ -119,7 +124,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 12.x]
+        node-version: [ 14.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -128,7 +133,15 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
+          
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: /home/ec2-user/pm2-reload.sh
 
 ```
 

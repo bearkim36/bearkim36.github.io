@@ -9,9 +9,9 @@ MS가 github을 인수하고 나서 모든 개발환경에 중심에 Github이 �
 
 ##### Overview
 - Github Actions 을 이용한 자동 배포
-- <span style="color:#cccccc">개발과 배포에 proxy 활용하기</span>
-- <span style="color:#cccccc">docker hub를 이용한 패키지 형상 관리</span>
-- <span style="color:#cccccc">Github Actions과 docker hub를 이용한 자동 배포</span>
+- <span style="color:#777777">개발과 배포에 proxy 활용하기</span>
+- <span style="color:#777777">docker hub를 이용한 패키지 형상 관리</span>
+- <span style="color:#777777">Github Actions과 docker hub를 이용한 자동 배포</span>
   
 # &nbsp;
 #### 1. devops가 무엇인가

@@ -3,6 +3,7 @@ layout: post
 title:  "Github을 활용한 WebProject devops 구성 2"
 date:   2021-04-29 05:00:00 +0900
 categories: bearkim
+published: false
 ---
 
 이전 글에 이어서 devops를 설정하는 팁을 소개해보고자 한다. 실무에서 자주 겪을 수 있는 문제 중에 restful api를 사용할 때 url설정이 꼬이는 경우가 

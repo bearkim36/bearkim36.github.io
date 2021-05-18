@@ -2,7 +2,8 @@
 layout: post
 title:  "s3fs로 mount한 S3의 AccessKey를 변경하는 방법"
 date:   2020-06-07 23:33:45 +0900
-categories: bearkim
+categories: aws
+tags: aws, s3, awss3, s3fs
 ---
 
 AWS S3를 s3fs로 마운트하여 사용하는 중에, IAM정책을 바꿔서 AccessKey를 변경 할일이 생겼다. 이 경우에는 두개의 파일에서 IAM AccessKey를 변경해야 한다. 단순한 작업이지만 google에 검색해도 한글자료는 안나와서 포스팅한다.

@@ -2,7 +2,8 @@
 layout: post
 title:  "Github을 활용한 WebProject devops 구성 1"
 date:   2021-03-08 05:08:45 +0900
-categories: bearkim
+categories: devops
+tags: github, devops, githubactions
 ---
 
 MS가 github을 인수하고 나서 모든 개발환경에 중심에 Github이 있는 것 같다. 형상관리에서 CI/CD까지 아우르는 github생태계는 개발자들에게 새로운 영감을 준다. 하지만 역시나 한글로된 국내자료는 단편적인 부분만 있고 전반적인 devops구성에는 제대로 된 자료를 찾기가 어렵다. 애초에 devops의 자료 자체가 강호에 전설로만 내려오는 무공비급마냥 찾기 힘든게 사실이다. 이번 포스트는 나름에 시리즈로 실무에서 흔히 접할 수 있는 WebProject를 상정해 이를 구성하는 devops를 github과 github actions을 통하여 구성해보는 예제를 만들고자 한다.

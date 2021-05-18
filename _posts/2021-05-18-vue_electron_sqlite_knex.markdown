@@ -6,6 +6,7 @@ categories: bearkim
 ---
 
 최근에는 간단한 GUI가 있는 프로그램을 빠르게 만들 때는 electron을 자주 사용하는 편이다. OS를 가리지 않는 크로스 플랫폼의 장점은 말할것도 없고 backend가 nodejs다 보니 웹이랑 호환성도 좋으며 DB붙이기도 편하다.
+
 얼마 전 친한동생이 요청해서 간단한 electron기반의 프로그램을 만들어 줬는데, 별도에 DB를 사용하는 환경이 아니다보니 sqlite3으로 작업하였다. 해당 내용을 포스트로 정리해보고자 한다.
 
 
@@ -88,13 +89,12 @@ $ sudo apt-get install sqlite3
 ![package.json확인](/files/posts/2021-05-18/05.png)
 주요 파일을 설명하자면 다음과 같다.
 
-| 경로 | 파일명 | 설명 |
-|---|---|---|
-| / | vue.config.js | vue 환경 설정 파일, 설치한 직후엔 없으므로 생성한다. |
-| /extraResources |  | 외부 리소스를 저장할 경로. sqlite3 db파일도 여기에 저장한다.  |
-| /src | main.js | vue 메인 파일 |
-| /src | App.vue | vue 초기 템플릿 vue 파일 |
-| /src | background.js | electron 백엔드 파일 |
+- vue.config.js vue 환경 설정 파일, 설치한 직후엔 없으므로 생성한다.
+- /extraResources 외부 리소스를 저장할 경로. sqlite3 db파일도 여기에 저장한다.
+- /src/main.js vue 메인 파일
+- /src/App.vue vue 초기 템플릿 vue 파일
+- /src/background.js electron 백엔드 파일
+
 여기에 다음 작업을 진행하며 파일을 추가한다.
 
 # &nbsp;

@@ -11,6 +11,7 @@ GITHUB_REPONAME = "bearkim36/bearkim36.github.io"
 
 desc "Generate blog files"
 task :generate do
+  system "cross-env JEKYLL_ENV=production jekyll serve --config _config.yml -t";
   Jekyll::Site.new(Jekyll.configuration({
     "source"      => ".",
     "destination" => "_site"

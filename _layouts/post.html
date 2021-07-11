@@ -11,12 +11,8 @@ layout: default
 
       <h1 data-toc-skip>{{ page.title }}</h1>
 
-      <div class="post-meta text-muted d-flex  justify-content-between">
-        <div>
-          {% for tag in page.tags %}
-            <button type="button" class="btn btn-sm btn-outline-secondary">{{ tag }}</button>
-          {% endfor %}
-        </div>
+      <div class="post-meta text-muted d-flex mb-5 justify-content-between">
+
         <div>
           <span class="semi-bold">
             {{ page.author | default: site.social.name }}
@@ -53,13 +49,13 @@ layout: default
         <!-- tags -->
         {% if page.tags.size > 0 %}
         <div class="post-tags">
-          <i class="fa fa-tags fa-fw mr-1"></i>
-          {% for tag in page.tags %}
-          <a href="{{ site.baseurl }}/tags/{{ tag | slugify | url_encode }}/"
-            class="post-tag no-text-decoration" >
-            {{- tag -}}
-          </a>
-          {% endfor %}
+   
+          <div>
+            {% for tag in page.tags %}
+              <button type="button" class="btn btn-sm btn-outline-secondary">{{ tag }}</button>
+            {% endfor %}
+          </div>
+
           </div>
         {% endif %}
 
@@ -72,9 +68,7 @@ layout: default
             by the author.
           </div>
           {% endif %}
-
-          {% include post-sharing.html %}
-
+       
         </div>
       </div>
 

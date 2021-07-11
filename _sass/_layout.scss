@@ -51,8 +51,10 @@
 
 #sidebar {
   h4 {
-    color:$gnbProfileText;
     margin:15px;
+    a {
+      color:$gnbProfileText;
+    }
   }
   
   @media (max-width: 768px) {

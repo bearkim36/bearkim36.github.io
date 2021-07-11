@@ -1,0 +1,84 @@
+<!--
+  The Side Bar
+-->
+<aside id="sidebar">
+  <h4>{{ site.title }}</h4>
+  <nav class="collapse bd-links" id="bd-docs-nav" aria-label="Docs navigation">
+    <ul class="list-unstyled mb-0 py-3 pt-md-1">
+    <li class="mb-1">
+      <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#tech-post-collapse" aria-expanded="true" aria-current="true">
+        Tech post
+      </button>
+
+      <div class="collapse show" id="tech-post-collapse">
+        <ul class="list-unstyled fw-normal pb-1 small">
+            <li><a href="/docs/5.0/getting-started/introduction/" class="d-inline-flex align-items-center rounded">Devops</a></li>
+            <li><a href="/docs/5.0/getting-started/download/" class="d-inline-flex align-items-center rounded">AWS</a></li>
+            <li><a href="/docs/5.0/getting-started/contents/" class="d-inline-flex align-items-center rounded">Vuejs</a></li>
+            <li><a href="/docs/5.0/getting-started/browsers-devices/" class="d-inline-flex align-items-center rounded">React</a></li>
+            <li><a href="/docs/5.0/getting-started/javascript/" class="d-inline-flex align-items-center rounded">Nodejs</a></li>
+            <li><a href="/docs/5.0/getting-started/build-tools/" class="d-inline-flex align-items-center rounded">C#</a></li>
+            <li><a href="/docs/5.0/getting-started/webpack/" class="d-inline-flex align-items-center rounded">RPI</a></li>
+            <li><a href="/docs/5.0/getting-started/parcel/" class="d-inline-flex align-items-center rounded">OS</a></li>
+            <li><a href="/docs/5.0/getting-started/accessibility/" class="d-inline-flex align-items-center rounded">Video Streaming</a></li>
+            <li><a href="/docs/5.0/getting-started/rfs/" class="d-inline-flex align-items-center rounded">GIS</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1">
+      <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#hobbies-collapse" aria-expanded="false">
+        관심거리
+      </button>
+
+      <div class="collapse" id="hobbies-collapse">
+        <ul class="list-unstyled fw-normal pb-1 small">
+            <li><a href="/docs/5.0/customize/overview/" class="d-inline-flex align-items-center rounded">Overview</a></li>
+            <li><a href="/docs/5.0/customize/sass/" class="d-inline-flex align-items-center rounded">Sass</a></li>
+            <li><a href="/docs/5.0/customize/options/" class="d-inline-flex align-items-center rounded">Options</a></li>
+            <li><a href="/docs/5.0/customize/color/" class="d-inline-flex align-items-center rounded">Color</a></li>
+            <li><a href="/docs/5.0/customize/components/" class="d-inline-flex align-items-center rounded">Components</a></li>
+            <li><a href="/docs/5.0/customize/css-variables/" class="d-inline-flex align-items-center rounded">CSS variables</a></li>
+            <li><a href="/docs/5.0/customize/optimize/" class="d-inline-flex align-items-center rounded">Optimize</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1">
+      <button class="btn d-inline-flex align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#portfolio-collapse" aria-expanded="false">
+        Portfolio
+      </button>
+
+      <div class="collapse" id="layout-collapse">
+        <ul class="list-unstyled fw-normal pb-1 small">
+            <li><a href="/docs/5.0/layout/breakpoints/" class="d-inline-flex align-items-center rounded">Breakpoints</a></li>
+            <li><a href="/docs/5.0/layout/containers/" class="d-inline-flex align-items-center rounded active" aria-current="page">Containers</a></li>
+            <li><a href="/docs/5.0/layout/grid/" class="d-inline-flex align-items-center rounded">Grid</a></li>
+            <li><a href="/docs/5.0/layout/columns/" class="d-inline-flex align-items-center rounded">Columns</a></li>
+            <li><a href="/docs/5.0/layout/gutters/" class="d-inline-flex align-items-center rounded">Gutters</a></li>
+            <li><a href="/docs/5.0/layout/utilities/" class="d-inline-flex align-items-center rounded">Utilities</a></li>
+            <li><a href="/docs/5.0/layout/z-index/" class="d-inline-flex align-items-center rounded">Z-index</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1">
+      <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#content-collapse" aria-expanded="false">
+        About
+      </button>
+    </li>
+</ul>
+</nav>
+<div class="profile">
+  <div class="profile-text">나는 한다, 개발을</div>
+  <div class="profile-image">    
+ </div>
+  <hr />
+    <button id="btnGithub" class="btn d-inline-flex align-items-center rounded"><i class="fab fa-github"></i></button>
+    <button class="btn d-inline-flex align-items-center rounded" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-content="인스타 안합니다">
+      <i class="fab fa-instagram" ></i>
+    </button>
+    
+    <button class="btn d-inline-flex align-items-center rounded"   data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-content="가서 일해보고는 싶네요">
+      <i class="fab fa-facebook-square" ></i>
+    </button>
+
+</div>
+</aside>

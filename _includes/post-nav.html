@@ -1,0 +1,41 @@
+<!--
+  Navigation buttons at the bottom of the post.
+-->
+<div id="related-posts" class="mt-5 mb-2 mb-sm-4">
+  <div class="card-deck mb-4">
+    {% if page.previous.url %}
+    <h4 class="pt-2 mt-1 mb-4 ml-1"
+    data-toc-skip>이전 포스트</h4>
+
+    <div class="card">
+      <a href="{{ site.baseurl }}{{ page.previous.url }}" 
+    prompt="{{ site.data.label.post.button.previous | default: 'previous' }}">
+        <div class="card-body">           
+          <h6 class="pt-0 mt-1 mb-3" data-toc-skip>{{ page.previous.title }}</h6>
+          <div class="text-muted small">
+            <i class="far fa-calendar fa-fw"></i>
+            {{ page.previous.date | date: "%b %d, %Y" }}
+          </div>
+        </div>
+      </a>
+    </div>
+  {% endif %}
+  {% if page.next.url %}
+  <h4 class="pt-2 mt-1 mb-4 ml-1"
+  data-toc-skip>다음 포스트</h4>
+
+  <div class="card">
+    <a href="{{ site.baseurl }}{{page.next.url}}" 
+    prompt="{{ site.data.label.post.button.next | default: 'next' }}">
+      <div class="card-body">           
+        <h6 class="pt-0 mt-1 mb-3" data-toc-skip>{{ page.next.title }}</h6>
+        <div class="text-muted small">
+          <i class="far fa-calendar fa-fw"></i>
+          {{ page.next.date | date: "%b %d, %Y" }}
+        </div>
+      </div>
+    </a>
+  </div>
+{% endif %}
+  </div> <!-- .card-deck -->
+</div> <!-- #related-posts -->

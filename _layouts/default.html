@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+  {% include head.html %}
+
+  <body>     
+    <nav id="mobileNavbar" class="py-2" aria-label="mobile navigation">
+      <h4>{{ site.title }}</h4>
+      <button class="btn d-inline-flex align-items-center" id="mobileToggle"> 
+        
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
+    <div id="wrap" class="container-xxl">
+    {% include sidebar.html %}
+      <div id="mobileMask"></div>
+      <div id="content">
+     
+        {{ content }}
+      </div>
+  </div>
+  {% include jsimport.html %}
+  </body>
+</html>

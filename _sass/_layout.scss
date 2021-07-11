@@ -1,0 +1,178 @@
+
+#wrap {
+  padding-left:0px !important;
+  padding-right:0px !important;
+  @media (max-width:768px) {
+    margin-bottom: 160px;
+  }
+  
+  @media (min-width: 768px) {
+    display: grid;   
+    display:-ms-grid;
+    grid-template-areas: "sidebar main";
+    grid-template-columns: 1fr 3fr;
+    -ms-grid-columns:1fr 3fr;
+    padding-bottom: 0px;
+  }
+  @media (min-width: 992px){
+    grid-template-columns: 1fr 4fr;
+  }
+  @media (min-width: 1400px) {
+    grid-template-columns: 1fr 5fr;
+    max-width: 100%;
+  }
+}
+
+#mobileNavbar {
+  @media (max-width: 768px) {
+    // position: -webkit-sticky;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    text-align: right;
+    padding: 0px 10px;
+    // border-bottom: 1px solid $gray2;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    background-color:$background;
+    h4 {
+      float: left;
+      margin: 6px 0 0 0;
+    }
+    i {
+      font-size:1.6em;
+      color:$mainText;
+    }
+  }
+  @media (min-width: 768px) {
+    display:none;
+  }
+}
+
+#sidebar {
+  h4 {
+    color:$gnbProfileText;
+    margin:15px;
+  }
+  
+  @media (max-width: 768px) {
+    position:fixed;
+    z-index:10;
+    display:none;
+    width: 30vh;
+
+  }
+  @media (min-width: 768px) {
+    display:block;    
+    h4 {
+      margin:15px 5px;
+    }
+  }
+ 
+
+  @media (min-width: 1400px) {
+    li {
+      margin-left:20px;
+    }
+  }
+  transition: all 0.2s;
+  position: relative;
+  background: $gnbBackgroundDark;
+  background: linear-gradient(0deg, $gnbBackgroundDark 25%, $gnbBackgroundLight 100%);
+  height: 100vh;
+  grid-area: sidebar;
+  -ms-grid-column:1;
+ 
+  .profile {
+    .profile-image {
+      background-image: url('/assets/images/bk_white.png');
+      width:100%;
+      height:300px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: bottom;
+    }
+    .profile-text {
+      bottom: 55px;
+      position: absolute;
+      width: 100%;
+      margin: 0 auto;
+      left: 0;
+      color:$gnbProfileText;
+    }
+    position: absolute;
+    width:100%;
+    bottom:20px;
+    text-align: center;
+    i {
+      font-size:1.5em;
+    }
+    hr {
+      margin:0 0 5px 0;
+    }
+  }
+  .bd-links {
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    display: block !important;
+    padding-left: .25rem;
+    margin-left: -.25rem;
+    overflow-y: auto;
+    overflow: auto;
+    font-weight: 600;
+  }
+  a, button, i{
+    font-size:1.2em;
+    color: $gnbText;
+    &:hover {
+      color: $highlight1
+    }
+  }
+  a {
+    padding-left:20px;
+  }
+  hr {
+    background-color:$gnbText;
+  }
+
+ 
+}
+
+#mobileMask {
+  @media (max-width: 768px) {
+    position: fixed;
+    width: 100vh;
+    height: 100vh;
+    z-index: 2;
+    background-color: $backgroundMask;
+    display:none;
+  }
+}
+
+#content {
+  @media (max-width: 768px) {
+    padding: 60px 10px 0px 10px;
+    overflow-x:hidden;
+  }
+  @media (min-width:768px) {
+    height: 100vh;
+    display: grid;
+    gap: inherit;
+    -ms-grid-column:1;
+    grid-template-areas:
+        "intro"
+        "toc"
+        "content";
+    grid-template-rows: auto auto 1fr;
+    grid-area: main;
+    order: 1!important;
+    padding: 30px 25px 0px 25px;
+    overflow-y:auto;
+  }
+ 
+  
+
+  @include scrollbar();
+}
+

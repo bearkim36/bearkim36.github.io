@@ -19,7 +19,7 @@ MS가 github을 인수하고 나서 모든 개발환경에 중심에 Github이 �
 
 사전적인 의미보다는 실무에서 devops는 말그대로 개발환경이다. 로컬에 개발툴을 설치하는 것도 개발환경 설정이지만 여기서 개발환경 이라고 하는 것은 CI(지속적인 소스통합), CD(지속적인 소스배포) 작업을 단순화 하기 위함이다. 다음의 작업으로 예를 들어보자.
 
-![WebProject 논리 구조도](/files/posts/2021-03-08/image1.png)
+![WebProject 논리 구조도](/assets/posts/2021-03-08/image1.png)
 
 위와 같은 구조를 가진 WebProject를 개발한다고 해보자. 이 프로젝트에서는 mongodb도 초기 구축시에 기초데이터가 필요할테니 각각 3개의 소스를 개발하고 관리해야 한다.
 
@@ -75,7 +75,7 @@ $ scp -i sshkey.pem -r build/. sshaccount@deploy.server.com:/usr/share/nginx/htm
 
 일단은 각각의 프로젝트 내부에 .github/workflows 라는 디렉토리를 만든다. 그리고 이 안에 yml파일을 만든다. 파일명은 크게 상관없다.
 
-![yml 디렉토리 구조](/files/posts/2021-03-08/image2.png)
+![yml 디렉토리 구조](/assets/posts/2021-03-08/image2.png)
 
 이 파일을 에디터로 열어서 수정한다.
 
@@ -133,10 +133,10 @@ jobs:
 ```
 
 
-![액션 실행 완료](/files/posts/2021-03-08/image03.png)
+![액션 실행 완료](/assets/posts/2021-03-08/image03.png)
 
 
-![파일 업로드 완료](/files/posts/2021-03-08/image04.png)
+![파일 업로드 완료](/assets/posts/2021-03-08/image04.png)
 
 이 과정에서 테스트를 한다거나 파일배치를 옮긴다거나 디테일을 추가 할 수는 있지만 이 것은 나중에 추가로 포스트를 작성할 계획이다. 일단 여기까지. 
 

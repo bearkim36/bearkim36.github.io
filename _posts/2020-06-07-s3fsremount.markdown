@@ -13,7 +13,7 @@ AWS S3를 s3fs로 마운트하여 사용하는 중에, IAM정책을 바꿔서 Ac
 
 IAM계정을 설정하는 내용은 다른 포스팅이 많으므로 생략한다. 생성한 계정에 아래의 정책을 추가한다.
 
-![CiecleCI Setup project Page](/files/posts/2020-06-07/image1.png)
+![CiecleCI Setup project Page](/assets/posts/2020-06-07/image1.png)
 
 # &nbsp;
 #### 2. 아래에 파일들을 수정해준다

@@ -19,7 +19,7 @@ published: false
 
 아래는 proxy의 개념도이다.
 
-![proxy다이어그램]](/files/posts/2021-04-29/image1.png)
+![proxy다이어그램]](/assets/posts/2021-04-29/image1.png)
 
 vue라던가 react와 같은 꽤 진보단 spa는 개발환경에서 webpack dev server를 통하여 proxy기능을 지원한다.
 

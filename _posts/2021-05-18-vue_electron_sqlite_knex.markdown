@@ -45,13 +45,13 @@ vue cli설치가 완료되면 아래의 명령어를 입력하여 앱을 생성�
 $ vue create vue-electron-sqlite3
 ```
 
-![vue 프로젝트 생성1](/files/posts/2021-05-18/01.png)
+![vue 프로젝트 생성1](/assets/posts/2021-05-18/01.png)
 Manually select features를 선택한다.
 
-![vue 프로젝트 생성2](/files/posts/2021-05-18/02.png)
+![vue 프로젝트 생성2](/assets/posts/2021-05-18/02.png)
 적당히 자주 사용하는 feature를 선택한다.
 
-![vue 프로젝트 생성3](/files/posts/2021-05-18/03.png)
+![vue 프로젝트 생성3](/assets/posts/2021-05-18/03.png)
 일단은 이렇게 설정했다. (좀 달라도 electron설정과는 차이 없음)
 
 
@@ -67,7 +67,7 @@ $ vue add electron-builder
 
 캡처를 못찍었는데 electron은 12버전을 선택했다. 설치를 완료하고 package.json을 편집기로 열면 다음과 같은 running 스크립트가 생겨있다.
 
-![package.json확인](/files/posts/2021-05-18/04.png)
+![package.json확인](/assets/posts/2021-05-18/04.png)
 
 여기에서 electron을 구동하는 명령어는 다음과 같다.
 - electron:serve 로컬에서 개발용으로 앱을 실행할 때 쓰인다.
@@ -87,7 +87,7 @@ $ sudo apt-get install sqlite3
 #### 4. 디렉토리 구조
 디렉토리 구조는 다음과 같다.
 
-![package.json확인](/files/posts/2021-05-18/05.png)
+![package.json확인](/assets/posts/2021-05-18/05.png)
 주요 파일을 설명하자면 다음과 같다.
 
 - vue.config.js vue 환경 설정 파일, 설치한 직후엔 없으므로 생성한다.
@@ -216,4 +216,4 @@ BearKim|010-1234-5678|bearkim36@gmail.com|1026
 [예제소스 github repository](https://github.com/bearkim36/vue-electron-sqlite3)
 
 실행결과 
-![package.json확인](/files/posts/2021-05-18/06.png)
+![package.json확인](/assets/posts/2021-05-18/06.png)

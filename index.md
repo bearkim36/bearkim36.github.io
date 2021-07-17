@@ -42,6 +42,8 @@ pagination:
   {% endfor %}
 {% endif %}
 
+
+
 <div id="post-list">
 {% for post in site.posts %}
 

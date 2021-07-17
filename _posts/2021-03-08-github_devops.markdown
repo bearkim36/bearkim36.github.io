@@ -2,7 +2,7 @@
 layout: post
 title:  "Github을 활용한 WebProject devops 구성 1"
 date:   2021-03-08 05:08:45 +0900
-categories: devops
+categories: [devops]
 tags: github, devops, githubactions
 ---
 

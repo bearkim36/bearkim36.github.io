@@ -47,6 +47,9 @@ defaults:
       dynamic_title: true    # Hide title in mobile screens.
 
 
+
+#category_list: [devops,aws,vuejs,react,nodejs,csharp,rpi,os,video,gis]      
+
 sass:
   style: compressed
 
@@ -69,7 +72,7 @@ jekyll-archives:
     tag: tag
   permalinks:
     tag: /tags/:name/
-    category: /categories/:name/
+    category: /category/:name/
 
 pagination:
   

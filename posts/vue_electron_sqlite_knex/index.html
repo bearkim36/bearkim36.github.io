@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+  <!--
+  The Head
+-->
+
+<head>
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7JT2Z6NPGL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7JT2Z6NPGL');
+</script>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no" />
+     
+     
+     
+     
+     
+     
+    
+
+  <title>Vue.js와 Electron, sqlite3와 knex 개발환경 구성</title>
+  <meta name="title" content="Vue.js와 Electron, sqlite3와 knex 개발환경 구성" />
+  <meta name="author" content="Bearkim" />
+  <meta name="description" content="최근에는 간단한 GUI가 있는 프로그램을 빠르게 만들 때는 electron을 자주 사용하는 편이다. OS를 가리지 않는 크로스 플랫폼의 장점은 말할것도 없고 backend가 nodejs다 보니 웹이랑 호환성도 좋으며 DB붙이기도 편하다.
+" />
+
+  
+  <meta property="article:tag" content="electron," />
+  
+  <meta property="article:tag" content="electronjs," />
+  
+  <meta property="article:tag" content="vue.js," />
+  
+  <meta property="article:tag" content="vue," />
+  
+  <meta property="article:tag" content="sqlite3," />
+  
+  <meta property="article:tag" content="knex," />
+  
+  <meta property="article:published_time" content="2021-05-18T23:00:00+09:00" />
+
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials">
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+
+<!-- highlight -->
+  <link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/styles/a11y-dark.min.css">
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/highlight.min.js"></script>
+
+
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+  integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+  crossorigin="anonymous"></script>
+
+  <script src="/assets/js/jekyll-search.min.js" type="text/javascript"></script>
+
+
+  <body>     
+    <nav id="mobileNavbar" class="py-2" aria-label="mobile navigation">
+      <h4>Bearkim Techlog</h4>
+      <button class="btn d-inline-flex align-items-center" id="mobileToggle"> 
+        
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
+    <div id="wrap" class="container-xxl">
+    <!--
+  The Side Bar
+-->
+<aside id="sidebar">
+  <h4><a href="/">Bearkim Techlog</a></h4>
+  <nav class="collapse bd-links" id="bd-docs-nav" aria-label="Docs navigation">
+    <ul class="list-unstyled mb-0 py-3 pt-md-1">
+    <li class="mb-1">
+      
+    
+
+      <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#tech-post-collapse" aria-expanded="true" aria-current="true">
+        Tech post
+      </button>
+
+      <div class="collapse show" id="tech-post-collapse">
+        <ul class="list-unstyled fw-normal pb-1 small">
+
+          
+          
+              
+              
+              <li><a href="/category/aws" class="d-inline-flex align-items-center rounded">aws<span class="count">(1)</span></a></li>
+              
+              
+              <li><a href="/category/devops" class="d-inline-flex align-items-center rounded">devops<span class="count">(1)</span></a></li>
+              
+              
+              <li><a href="/category/electron" class="d-inline-flex align-items-center rounded">electron<span class="count">(1)</span></a></li>
+              
+              
+              <li><a href="/category/jekyll" class="d-inline-flex align-items-center rounded">jekyll<span class="count">(1)</span></a></li>
+              
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1">
+      <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#hobbies-collapse" aria-expanded="false">
+        관심거리
+      </button>
+    </li>
+    <li class="mb-1">
+      <button class="btn d-inline-flex align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#portfolio-collapse" aria-expanded="false">
+        Portfolio
+      </button>
+
+      <div class="collapse" id="layout-collapse">
+        <ul class="list-unstyled fw-normal pb-1 small">
+            <li><a href="/" class="d-inline-flex align-items-center rounded">ICT</a></li>
+            <li><a href="/" class="d-inline-flex align-items-center rounded active" aria-current="page">Kiosk</a></li>
+            <li><a href="/" class="d-inline-flex align-items-center rounded">ITS</a></li>
+            <li><a href="/" class="d-inline-flex align-items-center rounded">Embeded</a></li>
+            <li><a href="/" class="d-inline-flex align-items-center rounded">WEB</a></li>
+            
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1">
+      <button id="aboutme" class="btn d-inline-flex align-items-center rounded collapsed">
+        About
+      </button>
+    </li>
+</ul>
+</nav>
+<div class="profile">
+  <div class="profile-text">나는 한다, 개발을</div>
+  <div class="profile-image">    
+ </div>
+  <hr />
+    <button id="btnGithub" class="btn d-inline-flex align-items-center rounded"><i class="fab fa-github"></i></button>
+    <button class="btn d-inline-flex align-items-center rounded" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-content="인스타 안합니다">
+      <i class="fab fa-instagram" ></i>
+    </button>
+    
+    <button class="btn d-inline-flex align-items-center rounded"   data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-content="가서 일해보고는 싶네요">
+      <i class="fab fa-facebook-square" ></i>
+    </button>
+
+</div>
+</aside>
+
+      <div id="mobileMask"></div>      
+      <div id="content">
+       <!--  <div id="searchWrap">
+          <ul class="search__results" id="resultsContainer"></ul>
+          <div id="search">
+            <input id="search-input" class="form-control mr-sm-2" type="search" placeholder="Search..." value="" />
+          </div>
+        </div> -->
+        
+        <div class="row">
+
+  <div id="post-wrapper" class="col-12 col-lg-9 col-xl-8">
+
+    <div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4">
+
+      <h1 data-toc-skip>Vue.js와 Electron, sqlite3와 knex 개발환경 구성</h1>
+
+      <div class="post-meta text-muted d-flex mb-5 justify-content-between">
+
+        <div>
+          <span class="semi-bold">
+            Bearkim
+          </span>
+          <i class="far fa-calendar fa-fw"></i>
+          May 18, 2021
+        </div>
+
+      </div> <!-- .post-meta -->
+
+      <div class="post-content">
+
+        
+
+        <p>최근에는 간단한 GUI가 있는 프로그램을 빠르게 만들 때는 electron을 자주 사용하는 편이다. OS를 가리지 않는 크로스 플랫폼의 장점은 말할것도 없고 backend가 nodejs다 보니 웹이랑 호환성도 좋으며 DB붙이기도 편하다.</p>
+
+<p>얼마 전 친한동생이 요청해서 간단한 electron기반의 프로그램을 만들어 줬는데, 별도에 DB를 사용하는 환경이 아니다보니 sqlite3으로 작업하였다. 해당 내용을 포스트로 정리해보고자 한다.</p>
+
+<p>구글링을 하면 찾을 수 있는 예제는 electron-vue 모듈이 있긴 하지만, 이 모듈은 electron버전이 너무 오래된 것이라 추천하지 않는다.</p>
+
+<h5 id="작업-순서">작업 순서</h5>
+<ol>
+  <li>vue cli 설치</li>
+  <li>electron-builder 설치</li>
+  <li>sqlite3 설치</li>
+  <li>디렉토리 구조</li>
+  <li>db파일 생성</li>
+  <li>vue.config.js 설정</li>
+  <li>sqlite3 &amp; knex 설치</li>
+  <li>예제 코드 작성</li>
+</ol>
+
+<h1> </h1>
+<h4 id="1-vue-cli-설치--vue-프로젝트-생성">1. vue cli 설치 &amp; vue 프로젝트 생성</h4>
+
+<p>일단 vue cli가 설치되어 있어야 한다.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm <span class="nb">install</span> <span class="nt">-g</span> @vue/cli
+</code></pre></div></div>
+
+<p>혹시라도 뻘건글씨와 permission denied 문제가 나면 sudo로 설치해야 한다.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>npm <span class="nb">install</span> <span class="nt">-g</span> @vue/cli
+</code></pre></div></div>
+
+<p>vue cli설치가 완료되면 아래의 명령어를 입력하여 앱을 생성한다.</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># vue create 프로젝트 명</span>
+<span class="nv">$ </span>vue create vue-electron-sqlite3
+</code></pre></div></div>
+
+<p><img src="/assets/posts/2021-05-18/01.png" alt="vue 프로젝트 생성1" />
+Manually select features를 선택한다.</p>
+
+<p><img src="/assets/posts/2021-05-18/02.png" alt="vue 프로젝트 생성2" />
+적당히 자주 사용하는 feature를 선택한다.</p>
+
+<p><img src="/assets/posts/2021-05-18/03.png" alt="vue 프로젝트 생성3" />
+일단은 이렇게 설정했다. (좀 달라도 electron설정과는 차이 없음)</p>
+
+<h1 id="-1"> </h1>
+<h4 id="2-electron-builder-설치">2. electron-builder 설치</h4>
+
+<p>생성한 프로젝트 디렉토리로 이동해서 vue cli로 electron-builder를 설치한다.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd </span>vue-electron-sqlite3
+<span class="nv">$ </span>vue add electron-builder
+</code></pre></div></div>
+
+<p>캡처를 못찍었는데 electron은 12버전을 선택했다. 설치를 완료하고 package.json을 편집기로 열면 다음과 같은 running 스크립트가 생겨있다.</p>
+
+<p><img src="/assets/posts/2021-05-18/04.png" alt="package.json확인" /></p>
+
+<p>여기에서 electron을 구동하는 명령어는 다음과 같다.</p>
+<ul>
+  <li>electron:serve 로컬에서 개발용으로 앱을 실행할 때 쓰인다.</li>
+  <li>electron:build 배포를 위해 인스톨 패키지를 만든다. 이 때, 만들어지는 인스톨 패키지는 구동되는 OS환경에 맞게 만들어진다.</li>
+  <li>postinstall, postuninstall 자주 쓸일은 없는데, 가끔 모듈 의존성이 꼬이면 실행할 일이 있다.</li>
+</ul>
+
+<h1 id="-2"> </h1>
+<h4 id="3-sqlite3-설치">3. sqlite3 설치</h4>
+
+<p>테스트 환경이 우분투라 우분투 설치법만 설명한다. 그 외는 아래의 링크 참조</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nb">install </span>sqlite3
+</code></pre></div></div>
+<p><a href="https://www.servermania.com/kb/articles/install-sqlite">sqlite3 OS별 설치법</a></p>
+
+<h1 id="-3"> </h1>
+<h4 id="4-디렉토리-구조">4. 디렉토리 구조</h4>
+<p>디렉토리 구조는 다음과 같다.</p>
+
+<p><img src="/assets/posts/2021-05-18/05.png" alt="package.json확인" />
+주요 파일을 설명하자면 다음과 같다.</p>
+
+<ul>
+  <li>vue.config.js vue 환경 설정 파일, 설치한 직후엔 없으므로 생성한다.</li>
+  <li>/extraResources 외부 리소스를 저장할 경로. sqlite3 db파일도 여기에 저장한다.</li>
+  <li>/src/main.js vue 메인 파일</li>
+  <li>/src/App.vue vue 초기 템플릿 vue 파일</li>
+  <li>/src/background.js electron 백엔드 파일</li>
+</ul>
+
+<p>여기에 다음 작업을 진행하며 파일을 추가한다.</p>
+
+<h1 id="-4"> </h1>
+<h4 id="5-db파일-생성">5. db파일 생성</h4>
+<p>sqlite3를 통해 데이터를 저장할 extraResources 디렉토리 안에 local database 파일을 작성한다.</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd </span>extraResources
+<span class="nv">$ </span>sqlite3 database.db
+SQLite version 3.31.1 2020-01-27 19:55:54
+Enter <span class="s2">".help"</span> <span class="k">for </span>usage hints.
+sqlite&gt;
+
+</code></pre></div></div>
+<p>파일이 정상적으로 생성되면 다음과 같은 sqlite&gt; 쉘로 진입된다. 여기에서 예제로 사용할 테이블을 SQL로 입력하면 된다.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sqlite</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="k">USER</span><span class="p">(</span><span class="n">NAME</span> <span class="nb">TEXT</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span> <span class="n">PHONE</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">EMAIL</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">BIRTHDAY</span> <span class="nb">INT</span> <span class="p">);</span>
+<span class="n">sqlite</span><span class="o">&gt;</span> <span class="p">.</span><span class="k">schema</span> <span class="k">USER</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="k">USER</span><span class="p">(</span><span class="n">NAME</span> <span class="nb">TEXT</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span> <span class="n">PHONE</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">EMAIL</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">BIRTHDAY</span> <span class="nb">INT</span> <span class="p">);</span>
+</code></pre></div></div>
+<h1 id="-5"> </h1>
+<h4 id="6-vueconfigjs-설정">6. vue.config.js 설정</h4>
+<p>vue.config.js파일을 생성하고 아래의 내용을 입력한다. 
+vue.config.js에는 extra resource에 대한 정의와 외부 모듈 사용에 대한 정의를 해야 한다.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">publicPath</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">production</span><span class="dl">"</span> <span class="p">?</span> <span class="dl">"</span><span class="s2">./</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">runtimeCompiler</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="na">productionSourceMap</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="na">pluginOptions</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">electronBuilder</span><span class="p">:</span> <span class="p">{</span>
+      <span class="c1">// vue에서 ipc를 사용하기 위해 preload가 정의되어 있어야 한다.</span>
+      <span class="na">preload</span><span class="p">:</span> <span class="dl">"</span><span class="s2">src/preload.js</span><span class="dl">"</span><span class="p">,</span>
+      <span class="c1">// electron backend에서 knex와 sqlite3 사용을위해 정의한다.</span>
+      <span class="na">externals</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">knex</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">sqlite3</span><span class="dl">"</span><span class="p">],</span>
+      <span class="na">productName</span><span class="p">:</span> <span class="dl">"</span><span class="s2">vue_electron_sqlite</span><span class="dl">"</span><span class="p">,</span>
+      <span class="na">builderOptions</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">asar</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="c1">// extra resources 사용을 위해 정의한다.</span>
+        <span class="na">extraResources</span><span class="p">:</span> <span class="p">[</span>
+          <span class="p">{</span>
+            <span class="na">from</span><span class="p">:</span> <span class="dl">"</span><span class="s2">./extraResources/</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">to</span><span class="p">:</span> <span class="dl">"</span><span class="s2">extraResources</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">filter</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">**/*</span><span class="dl">"</span><span class="p">]</span>
+          <span class="p">}</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h1 id="-6"> </h1>
+<h4 id="7-sqlite3--knex-설치">7. sqlite3 &amp; knex 설치</h4>
+<p>knex와 sqlite3 모듈을 설치한다.</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm <span class="nb">install</span> <span class="nt">--save</span> knex sqlite3
+</code></pre></div></div>
+<p>아래의 명령어를 입력하여 electron-builder에 의존성을 설정해 준다.</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm run postinstall
+</code></pre></div></div>
+
+<h1 id="-7"> </h1>
+<h4 id="8-예제-코드-작성">8. 예제 코드 작성</h4>
+<p>vue에서 ipc를 사용하기 위해서는 브라우저의 window객체에 preload를 설정해서 ipc모듈을 전역으로 선언해줘야 한다.</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd </span>src
+<span class="nv">$ </span><span class="nb">pwd</span>
+<span class="k">****</span>/vue-electron-sqlite3/src
+<span class="nv">$ </span>nano preload.js
+</code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/preload.js</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ipcRenderer</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">electron</span><span class="dl">"</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">ipcRenderer</span> <span class="o">=</span> <span class="nx">ipcRenderer</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>그리고 src/background.js 안에서 electron main window를 생성하는 BrowserWindow parameter에 아래의 옵션을 추가한다.</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/background.js</span>
+<span class="c1">// path 모듈 추가</span>
+<span class="k">import</span> <span class="nx">path</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">path</span><span class="dl">'</span>
+
+<span class="kd">const</span> <span class="nx">win</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BrowserWindow</span><span class="p">({</span>
+    <span class="na">width</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
+    <span class="na">height</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span>
+    <span class="na">webPreferences</span><span class="p">:</span> <span class="p">{</span>
+
+      <span class="c1">// Use pluginOptions.nodeIntegration, leave this alone</span>
+      <span class="c1">// See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#nod&gt;      </span>
+      <span class="na">nodeIntegration</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">ELECTRON_NODE_INTEGRATION</span><span class="p">,</span>
+      <span class="na">contextIsolation</span><span class="p">:</span> <span class="o">!</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">ELECTRON_NODE_INTEGRATION</span><span class="p">,</span>
+      <span class="c1">// 아래 preload 옵션 추가 </span>
+      <span class="na">preload</span><span class="p">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="dl">"</span><span class="s2">preload.js</span><span class="dl">"</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">})</span>
+</code></pre></div></div>
+
+<p>테스트를 위해 다음의 데이터를 db에 입력한다.</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd </span>extraResources
+<span class="nv">$ </span>sqlite3 database.db
+sqlite&gt; INSERT INTO USER<span class="o">(</span>NAME, PHONE, EMAIL, BIRTHDAY<span class="o">)</span> VALUES<span class="o">(</span><span class="s1">'KIM'</span>, <span class="s1">'010-1234-5678'</span>, <span class="s1">'bearkim36@gmail.com'</span>, 1024<span class="o">)</span><span class="p">;</span>
+sqlite&gt; INSERT INTO USER<span class="o">(</span>NAME, PHONE, EMAIL, BIRTHDAY<span class="o">)</span> VALUES<span class="o">(</span><span class="s1">'Bear'</span>, <span class="s1">'010-1234-5678'</span>, <span class="s1">'bearkim36@gmail.com'</span>, 1025<span class="o">)</span><span class="p">;</span>
+sqlite&gt; INSERT INTO USER<span class="o">(</span>NAME, PHONE, EMAIL, BIRTHDAY<span class="o">)</span> VALUES<span class="o">(</span><span class="s1">'BearKim'</span>, <span class="s1">'010-1234-5678'</span>
+, <span class="s1">'bearkim36@gmail.com'</span>, 1026<span class="o">)</span><span class="p">;</span>
+sqlite&gt; SELECT <span class="k">*</span> FROM USER<span class="p">;</span>
+KIM|010-1234-5678|bearkim36@gmail.com|1024
+Bear|010-1234-5678|bearkim36@gmail.com|1025
+BearKim|010-1234-5678|bearkim36@gmail.com|1026
+</code></pre></div></div>
+
+<p>예제 코드는 내용이 길어져서 github에 게시했다.</p>
+
+<p><a href="https://github.com/bearkim36/vue-electron-sqlite3">예제소스 github repository</a></p>
+
+<p>실행결과 
+<img src="/assets/posts/2021-05-18/06.png" alt="package.json확인" /></p>
+
+
+      </div>
+
+      <div class="post-tail-wrapper text-muted">
+
+        <!-- categories -->
+        
+        <div class="post-meta mb-3">
+          <i class="far fa-folder-open fa-fw mr-1"></i>
+          
+            <a href='/categories/electron/'>electron</a>
+        </div>
+        
+
+        <!-- tags -->
+        
+        <div class="post-tags">
+   
+          <div>
+            
+              <button type="button" class="btn btn-sm btn-outline-secondary">electron,</button>
+            
+              <button type="button" class="btn btn-sm btn-outline-secondary">electronjs,</button>
+            
+              <button type="button" class="btn btn-sm btn-outline-secondary">vue.js,</button>
+            
+              <button type="button" class="btn btn-sm btn-outline-secondary">vue,</button>
+            
+              <button type="button" class="btn btn-sm btn-outline-secondary">sqlite3,</button>
+            
+              <button type="button" class="btn btn-sm btn-outline-secondary">knex,</button>
+            
+          </div>
+
+          </div>
+        
+
+        <div class="post-tail-bottom
+          d-flex justify-content-between align-items-center mt-3 pt-5 pb-2">
+          
+       
+        </div>
+      </div>
+
+    </div> 
+
+
+  </div> 
+
+
+  <div class="col-12 col-lg-3 col-xl-4">
+    <div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4">
+
+    <!--
+ Recommend the other 3 posts according to the tags and categories of the current post,
+ if the number is not enough, use the other latest posts to supplement.
+-->
+
+<!-- The total size of related posts  -->
+
+
+<!-- An random integer that bigger than 0  -->
+
+
+<!-- Equals to TAG_SCORE / {max_categories_hierarchy}  -->
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+
+
+<!-- Fill with the other newlest posts  -->
+
+
+
+
+  
+    
+    
+      
+      
+        
+        
+        
+      
+    
+  
+    
+    
+  
+    
+    
+      
+      
+        
+        
+        
+      
+    
+  
+    
+    
+      
+      
+        
+        
+        
+      
+    
+  
+
+
+
+
+
+  <div id="related-posts" class="mt-5 mb-2 mb-sm-4">
+    <h4 class="pt-2 mt-1 mb-4 ml-1"
+      data-toc-skip>관련 포스트</h4>
+    <div class="card-deck mb-4">
+    
+      
+      
+      <div class="card mb-1">
+        <a href="/posts/jekyll-category/">
+          <div class="card-body">           
+            <h6 class="pt-0 mt-1 mb-3" data-toc-skip>Jekyll Category 메뉴바와 페이지 적용하기</h6>
+            <div class="text-muted small">
+              <i class="far fa-calendar fa-fw"></i>
+              May 18, 2021
+            </div>
+          </div>
+        </a>
+      </div>
+    
+      
+      
+      <div class="card mb-1">
+        <a href="/posts/github_devops/">
+          <div class="card-body">           
+            <h6 class="pt-0 mt-1 mb-3" data-toc-skip>Github을 활용한 WebProject devops 구성 1</h6>
+            <div class="text-muted small">
+              <i class="far fa-calendar fa-fw"></i>
+              May 18, 2021
+            </div>
+          </div>
+        </a>
+      </div>
+    
+      
+      
+      <div class="card mb-1">
+        <a href="/posts/s3fsremount/">
+          <div class="card-body">           
+            <h6 class="pt-0 mt-1 mb-3" data-toc-skip>s3fs로 mount한 S3의 AccessKey를 변경하는 방법</h6>
+            <div class="text-muted small">
+              <i class="far fa-calendar fa-fw"></i>
+              May 18, 2021
+            </div>
+          </div>
+        </a>
+      </div>
+    
+    </div> <!-- .card-deck -->
+  </div> <!-- #related-posts -->
+
+
+
+    <!--
+  Navigation buttons at the bottom of the post.
+-->
+<div id="related-posts" class="mt-5 mb-2 mb-sm-4">
+  <div class="card-deck mb-4">
+    
+    <h4 class="pt-2 mt-1 mb-4 ml-1"
+    data-toc-skip>이전 포스트</h4>
+
+    <div class="card">
+      <a href="/posts/github_devops/" 
+    prompt="previous">
+        <div class="card-body">           
+          <h6 class="pt-0 mt-1 mb-3" data-toc-skip>Github을 활용한 WebProject devops 구성 1</h6>
+          <div class="text-muted small">
+            <i class="far fa-calendar fa-fw"></i>
+            Mar 08, 2021
+          </div>
+        </div>
+      </a>
+    </div>
+  
+  
+  <h4 class="pt-2 mt-1 mb-4 ml-1"
+  data-toc-skip>다음 포스트</h4>
+
+  <div class="card">
+    <a href="/posts/jekyll-category/" 
+    prompt="next">
+      <div class="card-body">           
+        <h6 class="pt-0 mt-1 mb-3" data-toc-skip>Jekyll Category 메뉴바와 페이지 적용하기</h6>
+        <div class="text-muted small">
+          <i class="far fa-calendar fa-fw"></i>
+          Jul 17, 2021
+        </div>
+      </div>
+    </a>
+  </div>
+
+  </div> <!-- .card-deck -->
+</div> <!-- #related-posts -->
+
+
+
+    </div> <!-- #post-extend-wrapper -->
+
+  </div> <!-- .col-* -->
+
+</div> <!-- .row -->
+
+      </div>
+  </div>
+  <script>hljs.highlightAll();</script>
+
+<!-- bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script>
+  $("#mobileToggle").click((e) => {
+    $("#mobileMask").show(1000);
+    $("#sidebar").show(1000);
+  })
+  $("#mobileMask").click((e) => {
+    $("#mobileMask").hide()
+    $("#sidebar").hide()
+  });
+  $(window).resize((e)=> {
+    console.log();
+    if ($(document).width() > 768) {
+      $("#sidebar").show()
+    }
+    else {     
+      $("#sidebar").hide()
+      $("#mobileMask").hide()
+    }
+  }) 
+ 
+  $("#btnGithub").click((e)=> {
+    window.open(
+      'https://github.com/bearkim36',
+      '_blank' 
+    );
+  })
+
+  $("#aboutme").click((e) => {
+    location.href="/about"
+  });
+  const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+  const popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    return new bootstrap.Popover(popoverTriggerEl)
+  })
+</script>
+  </body>
+</html>

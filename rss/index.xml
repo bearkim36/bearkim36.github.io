@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bearkim Techlog</title>
+    <description>Bearkim Techlog</description>
+    <link>https://bearkim36.github.io/</link>
+    <atom:link href="https://bearkim36.github.io/rss" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 16 Aug 2021 20:07:36 +0900</pubDate>
+    <lastBuildDate>Mon, 16 Aug 2021 20:07:36 +0900</lastBuildDate>
+    <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Jekyll Category 메뉴바와 페이지 적용하기</title>
+        <description>&lt;p&gt;Jekyll 은 확실히 좀 쓰기 더럽다. 이 블로그도 Jekyll로 되어있지만, 불편한 부분이 은근 많다. 그 중, 현재 블로그 좌측 메뉴를 장식하고 있는 &lt;strong&gt;Tech Post&lt;/strong&gt; 섹션이 그러하다. 
+난 이 부분을 이 블로그에서 작성한 포스트의 카테고리를 추가하면 메뉴가 자동 구성되도록 하고 싶었는데, 인터넷 게시글 중에 어떻게 하라는건 많지만 제대로 동작하는건 아쉽게도 없는 것 같다. 그래서 현재 적용된 Jekyll 카테고리 개발 방법을 설명하고자 한다.&lt;/p&gt;
+
+&lt;h2&gt; &lt;/h2&gt;
+&lt;h4 id=&quot;1-jekyll-폴더-구조-설정&quot;&gt;1. Jekyll 폴더 구조 설정&lt;/h4&gt;
+
+&lt;p&gt;인터넷에 써있는 글처럼 _config.yml을 수정한다고 알아서 쫜 하고 되지는 않는다.
+아마 내가 설정을 제대로 못한거 같기도 하지만 어쨋든 야매로라도 구현은 했으니, 내가 구현한 방식을 이 포스트에서는 언급한다.&lt;/p&gt;
+
+&lt;p&gt;일단은 다음과 같은 폴더 구조를 만든다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-07-17/01.png&quot; alt=&quot;category 폴더 구조&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;/category 폴더를 만들고 그 하위에 카테고리 페이지가 될 MD파일을 작성해 넣는다.&lt;/p&gt;
+
+&lt;h1 id=&quot;-1&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;2-카테고리-페이지-md-파일-작성&quot;&gt;2. 카테고리 페이지 MD 파일 작성&lt;/h4&gt;
+
+&lt;p&gt;각각에 카테고리명.md 파일안에 아래에 코드를 입력한다.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+layout: default
+permalink: /category/aws
+category: aws
+---
+
+&amp;lt;div id=&quot;post-list&quot;&amp;gt;
+  {% assign category = page.category | default: page.title %}
+  {% for post in site.categories[category] %}
+  &amp;lt;div class=&quot;post-preview&quot;&amp;gt;
+    &amp;lt;a href=&quot;{{ post.url | relative_url }}&quot;&amp;gt;
+      &amp;lt;h3&amp;gt;
+        {{ post.title }}
+      &amp;lt;/h3&amp;gt;
+      &amp;lt;div class=&quot;post-content&quot;&amp;gt;
+        &amp;lt;p&amp;gt;
+          {% include no-linenos.html content=post.content %}
+          {{ content | markdownify | strip_html | truncate: 200 }}
+        &amp;lt;/p&amp;gt; 
+      &amp;lt;/div&amp;gt;
+    &amp;lt;/a&amp;gt;
+    &amp;lt;div class=&quot;post-meta text-muted d-flex justify-content-between&quot;&amp;gt;
+      &amp;lt;div&amp;gt;
+        {% for tag in post.tags %}
+          &amp;lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-outline-secondary&quot;&amp;gt;{{ tag }}&amp;lt;/button&amp;gt;
+        {% endfor %}
+      &amp;lt;/div&amp;gt;
+      &amp;lt;div class=&quot;post-date&quot;&amp;gt;
+        &amp;lt;i class=&quot;far fa-calendar fa-fw&quot;&amp;gt;&amp;lt;/i&amp;gt;
+        {{ post.date | date: &quot;%b %d, %Y&quot; }}
+      &amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+  &amp;lt;/div&amp;gt; 
+{% endfor %}
+&amp;lt;/div&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다른 내용은 그리 중요치 않고, 상단의 jekyll 페이지 헤더부분에 &lt;strong&gt;category&lt;/strong&gt; 명칭과 고유한 &lt;strong&gt;permalink&lt;/strong&gt; 를 파일명과 동일하게 입력행야 한다. 그래야 포스트에 입력한 카테고리명으로 정렬된다.&lt;/p&gt;
+
+&lt;h1 id=&quot;-2&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;3-포스트에-카테고리-입력&quot;&gt;3. 포스트에 카테고리 입력&lt;/h4&gt;
+&lt;p&gt;Jekyll로 작성하는 포스트의 상단 부분에 다음과 같이 카테고리를 명시한다.
+&lt;img src=&quot;/assets/posts/2021-07-17/02.png&quot; alt=&quot;post 상단 카테고리 입력&quot; /&gt;
+리얼리티를 살리기 위해 직접 작성한 포스트를 캡쳐했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;-3&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;4-자동으로-카테고리-먹여주는-메뉴바-작성&quot;&gt;4. 자동으로 카테고리 먹여주는 메뉴바 작성&lt;/h4&gt;
+
+&lt;p&gt;UI구성에 따라 다르겠지만, 이 블로그에서는 사이드 메뉴바에 다음과 같이 적용하였다.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  
+  {% capture site_categories %}{% for category in site.categories %}{{ category | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
+  {% assign categories_list = site_categories | split:',' | sort %}
+  &amp;lt;ul&amp;gt;
+  {% for item in (0..site.categories.size) %}{% unless forloop.last %}
+      {% capture this_word %}{{ categories_list[item] | strip_newlines }}{% endcapture %}
+          &amp;lt;li&amp;gt;&amp;lt;a href=&quot;/category/{{ this_word }}&quot; class=&quot;d-inline-flex align-items-center rounded&quot;&amp;gt;{{ this_word }}&amp;lt;span class=&quot;count&quot;&amp;gt;({{ site.categories[this_word].size }})&amp;lt;/span&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+  {% endunless %}{% endfor %}
+  &amp;lt;/ul&amp;gt;
+  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;이 코드를 적용하면 다음과 같이 해당되는 포스트 개수가 포함된 메뉴가 생성된다.
+&lt;img src=&quot;/assets/posts/2021-07-17/03.png&quot; alt=&quot;category 폴더 구조&quot; /&gt;
+여기에 링크를 선택하면 해당 페이지로 진입하여 해당 카테고리를 적용한 포스트 목록을 보여준다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-07-17/04.png&quot; alt=&quot;category 폴더 구조&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;여기까지 하면 완료다. 카테고리가 늘어날 때마다 카테고리명.md 파일은 계속 복붙해서 추가해줘야 하는 귀찮음이 있지만 어쨋든 정상 동작은 한다. 각자의 블로그생활에 도움이 되시길.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 17 Jul 2021 05:08:45 +0900</pubDate>
+        <link>https://bearkim36.github.io/posts/jekyll-category/</link>
+        <guid isPermaLink="true">https://bearkim36.github.io/posts/jekyll-category/</guid>
+        
+        <category>jekyll</category>
+        
+        
+        <category>jekyll</category>
+        
+      </item>
+    
+      <item>
+        <title>Vue.js와 Electron, sqlite3와 knex 개발환경 구성</title>
+        <description>&lt;p&gt;최근에는 간단한 GUI가 있는 프로그램을 빠르게 만들 때는 electron을 자주 사용하는 편이다. OS를 가리지 않는 크로스 플랫폼의 장점은 말할것도 없고 backend가 nodejs다 보니 웹이랑 호환성도 좋으며 DB붙이기도 편하다.&lt;/p&gt;
+
+&lt;p&gt;얼마 전 친한동생이 요청해서 간단한 electron기반의 프로그램을 만들어 줬는데, 별도에 DB를 사용하는 환경이 아니다보니 sqlite3으로 작업하였다. 해당 내용을 포스트로 정리해보고자 한다.&lt;/p&gt;
+
+&lt;p&gt;구글링을 하면 찾을 수 있는 예제는 electron-vue 모듈이 있긴 하지만, 이 모듈은 electron버전이 너무 오래된 것이라 추천하지 않는다.&lt;/p&gt;
+
+&lt;h5 id=&quot;작업-순서&quot;&gt;작업 순서&lt;/h5&gt;
+&lt;ol&gt;
+  &lt;li&gt;vue cli 설치&lt;/li&gt;
+  &lt;li&gt;electron-builder 설치&lt;/li&gt;
+  &lt;li&gt;sqlite3 설치&lt;/li&gt;
+  &lt;li&gt;디렉토리 구조&lt;/li&gt;
+  &lt;li&gt;db파일 생성&lt;/li&gt;
+  &lt;li&gt;vue.config.js 설정&lt;/li&gt;
+  &lt;li&gt;sqlite3 &amp;amp; knex 설치&lt;/li&gt;
+  &lt;li&gt;예제 코드 작성&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;1-vue-cli-설치--vue-프로젝트-생성&quot;&gt;1. vue cli 설치 &amp;amp; vue 프로젝트 생성&lt;/h4&gt;
+
+&lt;p&gt;일단 vue cli가 설치되어 있어야 한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; @vue/cli
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;혹시라도 뻘건글씨와 permission denied 문제가 나면 sudo로 설치해야 한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; @vue/cli
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;vue cli설치가 완료되면 아래의 명령어를 입력하여 앱을 생성한다.&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# vue create 프로젝트 명&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vue create vue-electron-sqlite3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-05-18/01.png&quot; alt=&quot;vue 프로젝트 생성1&quot; /&gt;
+Manually select features를 선택한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-05-18/02.png&quot; alt=&quot;vue 프로젝트 생성2&quot; /&gt;
+적당히 자주 사용하는 feature를 선택한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-05-18/03.png&quot; alt=&quot;vue 프로젝트 생성3&quot; /&gt;
+일단은 이렇게 설정했다. (좀 달라도 electron설정과는 차이 없음)&lt;/p&gt;
+
+&lt;h1 id=&quot;-1&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;2-electron-builder-설치&quot;&gt;2. electron-builder 설치&lt;/h4&gt;
+
+&lt;p&gt;생성한 프로젝트 디렉토리로 이동해서 vue cli로 electron-builder를 설치한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;vue-electron-sqlite3
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vue add electron-builder
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;캡처를 못찍었는데 electron은 12버전을 선택했다. 설치를 완료하고 package.json을 편집기로 열면 다음과 같은 running 스크립트가 생겨있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-05-18/04.png&quot; alt=&quot;package.json확인&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;여기에서 electron을 구동하는 명령어는 다음과 같다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;electron:serve 로컬에서 개발용으로 앱을 실행할 때 쓰인다.&lt;/li&gt;
+  &lt;li&gt;electron:build 배포를 위해 인스톨 패키지를 만든다. 이 때, 만들어지는 인스톨 패키지는 구동되는 OS환경에 맞게 만들어진다.&lt;/li&gt;
+  &lt;li&gt;postinstall, postuninstall 자주 쓸일은 없는데, 가끔 모듈 의존성이 꼬이면 실행할 일이 있다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;-2&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;3-sqlite3-설치&quot;&gt;3. sqlite3 설치&lt;/h4&gt;
+
+&lt;p&gt;테스트 환경이 우분투라 우분투 설치법만 설명한다. 그 외는 아래의 링크 참조&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;sqlite3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.servermania.com/kb/articles/install-sqlite&quot;&gt;sqlite3 OS별 설치법&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;-3&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;4-디렉토리-구조&quot;&gt;4. 디렉토리 구조&lt;/h4&gt;
+&lt;p&gt;디렉토리 구조는 다음과 같다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-05-18/05.png&quot; alt=&quot;package.json확인&quot; /&gt;
+주요 파일을 설명하자면 다음과 같다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;vue.config.js vue 환경 설정 파일, 설치한 직후엔 없으므로 생성한다.&lt;/li&gt;
+  &lt;li&gt;/extraResources 외부 리소스를 저장할 경로. sqlite3 db파일도 여기에 저장한다.&lt;/li&gt;
+  &lt;li&gt;/src/main.js vue 메인 파일&lt;/li&gt;
+  &lt;li&gt;/src/App.vue vue 초기 템플릿 vue 파일&lt;/li&gt;
+  &lt;li&gt;/src/background.js electron 백엔드 파일&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;여기에 다음 작업을 진행하며 파일을 추가한다.&lt;/p&gt;
+
+&lt;h1 id=&quot;-4&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;5-db파일-생성&quot;&gt;5. db파일 생성&lt;/h4&gt;
+&lt;p&gt;sqlite3를 통해 데이터를 저장할 extraResources 디렉토리 안에 local database 파일을 작성한다.&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;extraResources
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;sqlite3 database.db
+SQLite version 3.31.1 2020-01-27 19:55:54
+Enter &lt;span class=&quot;s2&quot;&gt;&quot;.help&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;usage hints.
+sqlite&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;파일이 정상적으로 생성되면 다음과 같은 sqlite&amp;gt; 쉘로 진입된다. 여기에서 예제로 사용할 테이블을 SQL로 입력하면 된다.&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;sqlite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NAME&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;TEXT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;PRIMARY&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;KEY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PHONE&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;TEXT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EMAIL&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;TEXT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BIRTHDAY&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;INT&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sqlite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;schema&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;USER&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NAME&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;TEXT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;PRIMARY&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;KEY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PHONE&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;TEXT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EMAIL&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;TEXT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BIRTHDAY&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;INT&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h1 id=&quot;-5&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;6-vueconfigjs-설정&quot;&gt;6. vue.config.js 설정&lt;/h4&gt;
+&lt;p&gt;vue.config.js파일을 생성하고 아래의 내용을 입력한다. 
+vue.config.js에는 extra resource에 대한 정의와 외부 모듈 사용에 대한 정의를 해야 한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;publicPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NODE_ENV&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;production&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;runtimeCompiler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;productionSourceMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;pluginOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;electronBuilder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;// vue에서 ipc를 사용하기 위해 preload가 정의되어 있어야 한다.&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;preload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;src/preload.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;// electron backend에서 knex와 sqlite3 사용을위해 정의한다.&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;externals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;knex&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;sqlite3&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;productName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;vue_electron_sqlite&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;builderOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;asar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// extra resources 사용을 위해 정의한다.&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;extraResources&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+          &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./extraResources/&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;extraResources&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;**/*&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+          &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;-6&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;7-sqlite3--knex-설치&quot;&gt;7. sqlite3 &amp;amp; knex 설치&lt;/h4&gt;
+&lt;p&gt;knex와 sqlite3 모듈을 설치한다.&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--save&lt;/span&gt; knex sqlite3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;아래의 명령어를 입력하여 electron-builder에 의존성을 설정해 준다.&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm run postinstall
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;-7&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;8-예제-코드-작성&quot;&gt;8. 예제 코드 작성&lt;/h4&gt;
+&lt;p&gt;vue에서 ipc를 사용하기 위해서는 브라우저의 window객체에 preload를 설정해서 ipc모듈을 전역으로 선언해줘야 한다.&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;src
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pwd&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;****&lt;/span&gt;/vue-electron-sqlite3/src
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nano preload.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// src/preload.js&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ipcRenderer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;electron&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ipcRenderer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ipcRenderer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;그리고 src/background.js 안에서 electron main window를 생성하는 BrowserWindow parameter에 아래의 옵션을 추가한다.&lt;/p&gt;
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// src/background.js&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// path 모듈 추가&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;win&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;BrowserWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;800&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;600&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;webPreferences&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;// Use pluginOptions.nodeIntegration, leave this alone&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;// See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#nod&amp;gt;      &lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;nodeIntegration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ELECTRON_NODE_INTEGRATION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;contextIsolation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ELECTRON_NODE_INTEGRATION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;// 아래 preload 옵션 추가 &lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;preload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;__dirname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;preload.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;테스트를 위해 다음의 데이터를 db에 입력한다.&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;extraResources
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;sqlite3 database.db
+sqlite&amp;gt; INSERT INTO USER&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;NAME, PHONE, EMAIL, BIRTHDAY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; VALUES&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'KIM'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'010-1234-5678'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'bearkim36@gmail.com'&lt;/span&gt;, 1024&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+sqlite&amp;gt; INSERT INTO USER&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;NAME, PHONE, EMAIL, BIRTHDAY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; VALUES&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Bear'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'010-1234-5678'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'bearkim36@gmail.com'&lt;/span&gt;, 1025&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+sqlite&amp;gt; INSERT INTO USER&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;NAME, PHONE, EMAIL, BIRTHDAY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; VALUES&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'BearKim'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'010-1234-5678'&lt;/span&gt;
+, &lt;span class=&quot;s1&quot;&gt;'bearkim36@gmail.com'&lt;/span&gt;, 1026&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+sqlite&amp;gt; SELECT &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; FROM USER&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+KIM|010-1234-5678|bearkim36@gmail.com|1024
+Bear|010-1234-5678|bearkim36@gmail.com|1025
+BearKim|010-1234-5678|bearkim36@gmail.com|1026
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;예제 코드는 내용이 길어져서 github에 게시했다.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/bearkim36/vue-electron-sqlite3&quot;&gt;예제소스 github repository&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;실행결과 
+&lt;img src=&quot;/assets/posts/2021-05-18/06.png&quot; alt=&quot;package.json확인&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 18 May 2021 23:00:00 +0900</pubDate>
+        <link>https://bearkim36.github.io/posts/vue_electron_sqlite_knex/</link>
+        <guid isPermaLink="true">https://bearkim36.github.io/posts/vue_electron_sqlite_knex/</guid>
+        
+        <category>electron,</category>
+        
+        <category>electronjs,</category>
+        
+        <category>vue.js,</category>
+        
+        <category>vue,</category>
+        
+        <category>sqlite3,</category>
+        
+        <category>knex,</category>
+        
+        
+        <category>electron</category>
+        
+      </item>
+    
+      <item>
+        <title>Github을 활용한 WebProject devops 구성 1</title>
+        <description>&lt;p&gt;MS가 github을 인수하고 나서 모든 개발환경에 중심에 Github이 있는 것 같다. 형상관리에서 CI/CD까지 아우르는 github생태계는 개발자들에게 새로운 영감을 준다. 하지만 역시나 한글로된 국내자료는 단편적인 부분만 있고 전반적인 devops구성에는 제대로 된 자료를 찾기가 어렵다. 애초에 devops의 자료 자체가 강호에 전설로만 내려오는 무공비급마냥 찾기 힘든게 사실이다. 이번 포스트는 나름에 시리즈로 실무에서 흔히 접할 수 있는 WebProject를 상정해 이를 구성하는 devops를 github과 github actions을 통하여 구성해보는 예제를 만들고자 한다.&lt;/p&gt;
+
+&lt;h5 id=&quot;overview&quot;&gt;Overview&lt;/h5&gt;
+&lt;ul&gt;
+  &lt;li&gt;Github Actions 을 이용한 자동 배포&lt;/li&gt;
+  &lt;li&gt;&lt;span style=&quot;color:#777777&quot;&gt;개발과 배포에 proxy 활용하기&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;span style=&quot;color:#777777&quot;&gt;docker hub를 이용한 패키지 형상 관리&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;span style=&quot;color:#777777&quot;&gt;Github Actions과 docker hub를 이용한 자동 배포&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;1-devops가-무엇인가&quot;&gt;1. devops가 무엇인가&lt;/h4&gt;
+
+&lt;p&gt;사전적인 의미보다는 실무에서 devops는 말그대로 개발환경이다. 로컬에 개발툴을 설치하는 것도 개발환경 설정이지만 여기서 개발환경 이라고 하는 것은 CI(지속적인 소스통합), CD(지속적인 소스배포) 작업을 단순화 하기 위함이다. 다음의 작업으로 예를 들어보자.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-03-08/image1.png&quot; alt=&quot;WebProject 논리 구조도&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;위와 같은 구조를 가진 WebProject를 개발한다고 해보자. 이 프로젝트에서는 mongodb도 초기 구축시에 기초데이터가 필요할테니 각각 3개의 소스를 개발하고 관리해야 한다.&lt;/p&gt;
+
+&lt;p&gt;이 환경에서 만약 퍼블리셔가 퍼블리싱을 수정할 일이 생겨 Frontend에 소스를 변경하고 이를 수정한 후 개발자가 이를 배포한다고 가정하면 어떻게 해야할까? 다행히 형상관리로 github은 쓰고는 상황이라면 작업은 대충 아래와 같을 것이다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;퍼블리셔가 소스를 수정하고 github에 push한다.&lt;/li&gt;
+  &lt;li&gt;퍼블리셔가 개발자에게 소스가 수정됐다고 알린다.&lt;/li&gt;
+  &lt;li&gt;개발자 (혹은 관리자)가 이 소스를 github에서 pull한다.&lt;/li&gt;
+  &lt;li&gt;react (혹은 vue)를 빌드한다.&lt;/li&gt;
+  &lt;li&gt;빌드된 소스를 scp를 써서 배포서버의 배포서버에 web root에 복사해 넣는다.&lt;/li&gt;
+  &lt;li&gt;반복&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;이와같은 상황을 가정하고 이번 포스트에서는 react로 개발된 frontend의 devops를 구성하는 방법에 대해 설명한다.&lt;/p&gt;
+
+&lt;h1 id=&quot;-1&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;2-그럼-어떻게-개선할-것인가&quot;&gt;2. 그럼 어떻게 개선할 것인가&lt;/h4&gt;
+
+&lt;p&gt;무엇을 만들던 간에 목표가 제일 중요하다. 프로젝트 마다 처한 상황과 환경이 다르기 때문에 무엇이 최적이라고 할 수는 없지만 그걸 합리적으로 설계하는 것이 devops설계의 핵심이다. 이번에 예제로 할 WebProject는 다음의 상황을 가정한다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;ssh로 접근할 수 있는 리눅스 배포 서버가 있다.&lt;/li&gt;
+  &lt;li&gt;소스는 github으로 형상관리 중이다.&lt;/li&gt;
+  &lt;li&gt;같은소스를 다른 서버에 포팅 할 일은 없다.&lt;/li&gt;
+  &lt;li&gt;코드 업데이트가 꽤 빈번히 일어난다.&lt;/li&gt;
+  &lt;li&gt;개발 조직이 소규모이다.&lt;/li&gt;
+  &lt;li&gt;보안상의 문제로 ssh는 pem키 파일을 써서 접속한다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;위와 같은 프로젝트 상황이라고 가정한 후 devops를 설계해 보는 예제를 설명해 보겠다.&lt;/p&gt;
+
+&lt;h1 id=&quot;-2&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;3-반복해서-하는-일은-github-actions이-한다&quot;&gt;3. 반복해서 하는 일은 github actions이 한다.&lt;/h4&gt;
+
+&lt;p&gt;앞서 설명한 예제에서 코드 수정과 배포는 꽤 잦은 일이지만 위에 상황에서는 사람이 매번 그 작업을 하고있다. 이번에 설계하는 devops는 그 작업을 github actions에게 맡기는 것이다. 그럼 위 예제에서 반복되는 작업은 &lt;strong&gt;소스 업데이트 시 빌드하고 배포서버에 복사하는 작업&lt;/strong&gt; 이 될것이다. 그럼 실제 Frontend 소스의 배포작업에서 쓰는 쉘 스크립트는 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 소스 가져오기&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git pull
+remote: Enumerating objects: &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+remote: Counting objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+... 중략
+&lt;span class=&quot;c&quot;&gt;# 누가 모듈을 추가했을지도 모르니 의존성 설치&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 빌드&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm run build
+&lt;span class=&quot;c&quot;&gt;# 배포서버로 포팅&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# scp -i pem키파일 -r build/. ssh 접속가능 계정@배포서버 IP나 DNS:nginx html 루트&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;scp &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; sshkey.pem &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; build/. sshaccount@deploy.server.com:/usr/share/nginx/html/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;그럼 이 작업들을 github actions에게 떠넘겨보자.&lt;/p&gt;
+
+&lt;p&gt;일단은 각각의 프로젝트 내부에 .github/workflows 라는 디렉토리를 만든다. 그리고 이 안에 yml파일을 만든다. 파일명은 크게 상관없다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-03-08/image2.png&quot; alt=&quot;yml 디렉토리 구조&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;이 파일을 에디터로 열어서 수정한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#frontend yml&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Front-end CI&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;    
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+
+    &lt;span class=&quot;na&quot;&gt;strategy&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;node-version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;14.x&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# source checkout&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v2&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;# nodejs 설치&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Use Node.js $&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/setup-node@v1&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;node-version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;$&lt;/span&gt;
+      
+      &lt;span class=&quot;c1&quot;&gt;# module 설치&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;npm install&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;npm install&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;# 소스 빌드&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Npm run build&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;npm run build&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;# scp 파일 복사&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# secret.키 이름 은 github repository 시크릿 키이다. &lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# 구글링 해도 쉽게 나오지만 간단하게 설명하면 &lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# github repository 상단메뉴 &amp;gt; settings &amp;gt; secrets 에 new respositry secret 버튼으로 &lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# 노출하기 싫은 환경변수를 저장할 수 있다.&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;# 아래 스크립트는 build에 있는 파일을 배포서버의 웹서버 루트에 복사해 넣는 액션이다.&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;scp action&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;appleboy/scp-action@master&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;$&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;$&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;$&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;$&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;build&quot;&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;devops_test&quot;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-03-08/image03.png&quot; alt=&quot;액션 실행 완료&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-03-08/image04.png&quot; alt=&quot;파일 업로드 완료&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;이 과정에서 테스트를 한다거나 파일배치를 옮긴다거나 디테일을 추가 할 수는 있지만 이 것은 나중에 추가로 포스트를 작성할 계획이다. 일단 여기까지.&lt;/p&gt;
+
+&lt;p&gt;참고 예제
+https://github.com/bearkim36/devops-frontend-example&lt;/p&gt;
+
+&lt;h1 id=&quot;-3&quot;&gt; &lt;/h1&gt;
+</description>
+        <pubDate>Mon, 08 Mar 2021 05:08:45 +0900</pubDate>
+        <link>https://bearkim36.github.io/posts/github_devops/</link>
+        <guid isPermaLink="true">https://bearkim36.github.io/posts/github_devops/</guid>
+        
+        <category>github,</category>
+        
+        <category>devops,</category>
+        
+        <category>githubactions</category>
+        
+        
+        <category>devops</category>
+        
+      </item>
+    
+      <item>
+        <title>s3fs로 mount한 S3의 AccessKey를 변경하는 방법</title>
+        <description>&lt;p&gt;AWS S3를 s3fs로 마운트하여 사용하는 중에, IAM정책을 바꿔서 AccessKey를 변경 할일이 생겼다. 이 경우에는 두개의 파일에서 IAM AccessKey를 변경해야 한다. 단순한 작업이지만 google에 검색해도 한글자료는 안나와서 포스팅한다.&lt;/p&gt;
+
+&lt;h1&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;1-iam계정을-추가하고-다음의-정책을-설정해준다&quot;&gt;1. IAM계정을 추가하고 다음의 정책을 설정해준다&lt;/h4&gt;
+
+&lt;p&gt;IAM계정을 설정하는 내용은 다른 포스팅이 많으므로 생략한다. 생성한 계정에 아래의 정책을 추가한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2020-06-07/image1.png&quot; alt=&quot;CiecleCI Setup project Page&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;-1&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;2-아래에-파일들을-수정해준다&quot;&gt;2. 아래에 파일들을 수정해준다&lt;/h4&gt;
+&lt;p&gt;AWS CLI의 AccessKey와 기존에 설정된 s3fs의 AccessKey의 수정이 필요하다.&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#~/.aws/credentials       // AWS CLI 설정파일&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;default]
+aws_access_key_id &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ABCD12345612378               &lt;span class=&quot;c&quot;&gt;#변경할 IAM access key&lt;/span&gt;
+aws_secret_access_key &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; qwerasdf1234567891723     &lt;span class=&quot;c&quot;&gt;#변경할 IAM secret access key&lt;/span&gt;
+
+
+&lt;span class=&quot;c&quot;&gt;#/etc/passwd-s3fs       // s3fs 비밀번호&lt;/span&gt;
+ABCD12345612378:qwerasdf1234567891723         &lt;span class=&quot;c&quot;&gt;#변경할 IAM access key:변경할 IAM secret access key&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;-2&quot;&gt; &lt;/h1&gt;
+&lt;h4 id=&quot;3-s3fs마운트를-해제했다가-다시-마운트한다&quot;&gt;3. s3fs마운트를 해제했다가 다시 마운트한다&lt;/h4&gt;
+
+&lt;p&gt;마운트를 재설정하지 않은 상태에서는 기존에 마운트된 디렉토리에서 파일을 사용하려 하면 다음과 같은 오류가 발생한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-la&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt;: reading directory .: Operation not permitted
+total 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;이 경우, s3fs마운트를 다시 설정하면 해결된다.&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;fusermount &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; 마운트경로
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;s3fs &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;버킷명] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;마운트 경로] &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;use_cache&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/tmp &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; allow_other &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=[&lt;/span&gt;사용자ID] &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=[&lt;/span&gt;사용자 그룹ID] &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;multireq_max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;20 &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; use_path_request_style &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;https://s3-[리전id].amazonaws.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;-3&quot;&gt; &lt;/h1&gt;
+</description>
+        <pubDate>Sun, 07 Jun 2020 23:33:45 +0900</pubDate>
+        <link>https://bearkim36.github.io/posts/s3fsremount/</link>
+        <guid isPermaLink="true">https://bearkim36.github.io/posts/s3fsremount/</guid>
+        
+        <category>aws,</category>
+        
+        <category>s3,</category>
+        
+        <category>awss3,</category>
+        
+        <category>s3fs</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
+    
+  </channel>
+</rss>

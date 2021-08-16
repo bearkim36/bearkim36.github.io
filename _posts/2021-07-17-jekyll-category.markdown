@@ -4,6 +4,7 @@ title:  "Jekyll Category 메뉴바와 페이지 적용하기"
 date:   2021-07-17 05:08:45 +0900
 categories: [jekyll]
 tags: jekyll
+author: Bearkim
 ---
 
 Jekyll 은 확실히 좀 쓰기 더럽다. 이 블로그도 Jekyll로 되어있지만, 불편한 부분이 은근 많다. 그 중, 현재 블로그 좌측 메뉴를 장식하고 있는 **Tech Post** 섹션이 그러하다. 

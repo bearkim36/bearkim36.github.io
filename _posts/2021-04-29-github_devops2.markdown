@@ -3,6 +3,7 @@ layout: post
 title:  "Github을 활용한 WebProject devops 구성 2"
 date:   2021-04-29 05:00:00 +0900
 categories: bearkim
+author: Bearkim
 published: false
 ---
 

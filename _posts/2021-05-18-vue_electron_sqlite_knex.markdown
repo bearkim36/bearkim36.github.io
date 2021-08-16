@@ -4,6 +4,7 @@ title:  "Vue.js와 Electron, sqlite3와 knex 개발환경 구성"
 date:   2021-05-18 23:00:00 +0900
 categories: electron
 tags: electron, electronjs, vue.js, vue, sqlite3, knex,
+author: Bearkim
 ---
 
 최근에는 간단한 GUI가 있는 프로그램을 빠르게 만들 때는 electron을 자주 사용하는 편이다. OS를 가리지 않는 크로스 플랫폼의 장점은 말할것도 없고 backend가 nodejs다 보니 웹이랑 호환성도 좋으며 DB붙이기도 편하다.
